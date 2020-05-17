@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { UserService } from './../user.service';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -14,7 +15,7 @@ export class LoginComponent  {
     password: new FormControl('', Validators.required)
   });
   private allusers: User[];
-  constructor(private users: UserService) {
+  constructor(private users: UserService, private route: Router) {
     this.allusers = users.getUsers();
   }
 
@@ -49,6 +50,10 @@ export class LoginComponent  {
       this.form.setErrors({
         invalidLogin: true
       });
+    }
+    else{
+      this.users.loggedUser = currentuser.username;
+      this.route.navigate(['']);
     }
   }
 }
