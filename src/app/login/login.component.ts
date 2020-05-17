@@ -1,6 +1,6 @@
 import { UserService } from './../user.service';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from '../userDetails';
 
 @Component({
@@ -8,14 +8,29 @@ import { User } from '../userDetails';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent  {
   form = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl('')
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
   });
   private allusers: User[];
   constructor(private users: UserService) {
     this.allusers = users.getUsers();
+  }
+
+  get username(){
+    return this.form.value.username;
+  }
+  get password(){
+    return this.form.value.password;
+  }
+  isValidInput(){
+    const username = this.form.controls.username;
+    const password = this.form.controls.password;
+    if (username.errors || password.errors || this.form.errors) {
+      return true;
+    }
+    return false;
   }
 
   private check(user: User, curUser: User){
@@ -24,14 +39,12 @@ export class LoginComponent implements OnInit {
     }
     return false;
   }
-
   login(){
     const currentuser: User = {
-      username: this.form.value.username,
-      password: this.form.value.password
+      username: this.username,
+      password: this.password
     };
-    let matchedUser = this.allusers.filter(((user) => this.check(user, currentuser)));
-    console.log(matchedUser, currentuser);
+    const matchedUser = this.allusers.filter(((user) => this.check(user, currentuser)));
     if (matchedUser.length === 0) {
       this.form.setErrors({
         invalidLogin: true
