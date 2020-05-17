@@ -6,13 +6,17 @@ import {User} from './userDetails';
 })
 export class UserService {
 
-  constructor() { }
-  getUsers(){
-    const users: User[] = [
+  private users: User[];
+  constructor() {
+    this.users = [
       {username : 'rishav' , password : '123456789' },
       {username : 'mihir' , password : '789654123' }
-    ]
-    return users;
+    ];
   }
-
+  getUsers(){
+    return this.users;
+  }
+  updateUsers(user: User){
+    this.users.push(user);
+  }
 }

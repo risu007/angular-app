@@ -17,6 +17,7 @@
           <div class="text-danger col-md-4" *ngIf="form.get('password').touched && form.get('password').invalid" >Password is required</div>
         </div>
         <button [disabled]="isValidInput()" type="submit" class="btn btn-primary">Login</button>
+        <p class="message">Not registered? <a routerLink="/signup">Create an account</a></p>
       </form>
     </div>
     <div *ngIf="form.errors" class="alert alert-danger error">
